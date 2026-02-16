@@ -1,15 +1,17 @@
 # main_dev_check
 name: Main and Dev Checks
 
-on:
-  push:
-    branches:
-      - main
-      - dev
-  pull_request:
-    branches:
-      - main
-      - dev
+# GRAPH >> MANUAL_TRIGGER
+# on:
+#   push:
+#     branches:
+#       - main
+#       - dev
+#   pull_request:
+#     branches:
+#       - main
+#       - dev
+on: workflow_dispatch
 
 jobs:
   build:
