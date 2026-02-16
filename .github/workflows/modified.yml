@@ -1,0 +1,50 @@
+# main_dev_check
+name: Main and Dev Checks
+
+# GRAPH >> MANUAL_TRIGGER
+# on:
+#   push:
+#     branches:
+#       - main
+#       - dev
+#   pull_request:
+#     branches:
+#       - main
+#       - dev
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # GRAPH >> REMOVE_MATRIX
+        # os: [ubuntu-latest, macos-latest, windows-latest]
+        # python-version: ["3.11", "3.12", "3.13", "3.14"]
+        os: [ubuntu-latest]
+        python-version: ["3.11"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: Lint with Ruff
+        run: |
+          pip install ruff
+          ruff format .
+          ruff check . --fix
+          
+      - name: Test with pytest
+        run: |
+          pip install pytest
+          pytest
